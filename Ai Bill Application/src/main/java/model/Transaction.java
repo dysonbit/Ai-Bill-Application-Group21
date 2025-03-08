@@ -7,27 +7,40 @@ public class Transaction {
     private String transactionType;
     private String counterparty;
     private String commodity;
+    private String inOut;
+
+
+
     private double paymentAmount;
     private String paymentMethod;
     private String currentStatus;
-    private String orderNumbe;
+    private String orderNumber;
     private String merchantNumber;
     private String remarks;
 
     public Transaction() {
     }
 
-    public Transaction(String transactionTime, String transactionType, String counterparty, String commodity, double paymentAmount, String paymentMethod, String currentStatus, String orderNumbe, String merchantNumber, String remarks) {
+    public Transaction(String transactionTime, String transactionType, String counterparty, String commodity, String inOut, double paymentAmount, String paymentMethod, String currentStatus, String orderNumber, String merchantNumber, String remarks) {
         this.transactionTime = transactionTime;
         this.transactionType = transactionType;
         this.counterparty = counterparty;
         this.commodity = commodity;
+        this.inOut = inOut;
         this.paymentAmount = paymentAmount;
         this.paymentMethod = paymentMethod;
         this.currentStatus = currentStatus;
-        this.orderNumbe = orderNumbe;
+        this.orderNumber = orderNumber;
         this.merchantNumber = merchantNumber;
         this.remarks = remarks;
+    }
+
+    public String getInOut() {
+        return inOut;
+    }
+
+    public void setInOut(String inOut) {
+        this.inOut = inOut;
     }
 
     public void setTransactionTime(String transactionTime) {
@@ -58,8 +71,8 @@ public class Transaction {
         this.currentStatus = currentStatus;
     }
 
-    public void setOrderNumbe(String orderNumbe) {
-        this.orderNumbe = orderNumbe;
+    public void setOrderNumber(String orderNumbe) {
+        this.orderNumber = orderNumbe;
     }
 
     public void setMerchantNumber(String merchantNumber) {
@@ -98,8 +111,8 @@ public class Transaction {
         return currentStatus;
     }
 
-    public String getOrderNumbe() {
-        return orderNumbe;
+    public String getOrderNumber() {
+        return orderNumber;
     }
 
     public String getMerchantNumber() {
