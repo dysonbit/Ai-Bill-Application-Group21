@@ -15,7 +15,7 @@ public class ChatCompletionsExample {
     static String apiKey = System.getenv("ARK_API_KEY");
     static ConnectionPool connectionPool = new ConnectionPool(5, 1, TimeUnit.SECONDS);
     static Dispatcher dispatcher = new Dispatcher();
-    // The output time of the reasoning model is relatively long. Please increase the timeout period.
+    // The output time of the reasoning model is relatively long. Please increase the timeout period.//
     static ArkService service = ArkService.builder().timeout(Duration.ofSeconds(1800)).connectTimeout(Duration.ofSeconds(20)).dispatcher(dispatcher).connectionPool(connectionPool).baseUrl("https://ark.cn-beijing.volces.com/api/v3").apiKey(apiKey).build();
     public static void main(String[] args) {
         System.out.println(" [Recommended]----- streaming request -----");
