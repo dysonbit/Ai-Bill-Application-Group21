@@ -11,7 +11,7 @@ import javax.swing.table.TableCellRenderer;
 import java.util.Vector;
 
 public class menu {
-    private static final String FILE_PATH = "src/main/order(20250210-20250310).csv";
+    private static final String FILE_PATH = "src\\main\\resources\\CSVForm\\order(20250210-20250310).csv";
     private static DefaultTableModel tableModel;
     private static Vector<Vector<String>> allData = new Vector<>();
 
@@ -80,7 +80,8 @@ public class menu {
         allData.clear();
         tableModel.setRowCount(0);
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(FILE_PATH), "GBK"))) {
+        try (InputStream inputStream = menu.class.getClassLoader().getResourceAsStream("CSVForm\\order(20250210-20250310).csv");
+             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "GBK"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] rowData = line.split(",");
@@ -92,10 +93,11 @@ public class menu {
                     tableModel.addRow(row);
                 }
             }
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "CSV文件读取失败！", "错误", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     private static void deleteRow(int rowIndex) {
@@ -131,7 +133,7 @@ public class menu {
     }
 
     private static void saveCSVData() {
-        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_PATH), "GBK"))) {
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FILE_PATH), "UTF-8"))) {
             for (Vector<String> row : allData) {
                 bw.write(String.join(",", row.subList(0, row.size() - 1)));
                 bw.newLine();
