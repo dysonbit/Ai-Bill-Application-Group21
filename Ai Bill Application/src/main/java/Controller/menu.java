@@ -22,7 +22,7 @@ public class menu {
         frame.setLayout(new BorderLayout());
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
-        JButton menuButton = new JButton("菜单");
+        JButton menuButton = new JButton("Menu");
         JButton aiButton = new JButton("AI");
         leftPanel.add(menuButton);
         leftPanel.add(aiButton);
@@ -35,24 +35,24 @@ public class menu {
         JPanel inputPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JTextField input1 = new JTextField(8), input2 = new JTextField(8), input3 = new JTextField(8),
                 input4 = new JTextField(8), input5 = new JTextField(8);
-        JComboBox<String> comboBox = new JComboBox<>(new String[]{"", "收入", "支出"});
-        JButton searchButton = new JButton("搜索");
+        JComboBox<String> comboBox = new JComboBox<>(new String[]{"", "In", "Out"});
+        JButton searchButton = new JButton("Search");
 
-        inputPanel.add(new JLabel("交易时间"));
+        inputPanel.add(new JLabel("Transaction time"));
         inputPanel.add(input1);
-        inputPanel.add(new JLabel("交易类型"));
+        inputPanel.add(new JLabel("Transaction type"));
         inputPanel.add(input2);
-        inputPanel.add(new JLabel("交易对象"));
+        inputPanel.add(new JLabel("Transaction counterparty"));
         inputPanel.add(input3);
-        inputPanel.add(new JLabel("商品"));
+        inputPanel.add(new JLabel("Commodity"));
         inputPanel.add(input4);
-        inputPanel.add(new JLabel("收支"));
+        inputPanel.add(new JLabel("InOut"));
         inputPanel.add(comboBox);
-        inputPanel.add(new JLabel("支付方式"));
+        inputPanel.add(new JLabel("Payment method"));
         inputPanel.add(input5);
         inputPanel.add(searchButton);
 
-        String[] columnNames = {"交易时间", "交易类型", "交易对方", "商品", "收/支", "金额(元)", "支付方式", "当前状态", "交易单号", "商户单号", "备注", "操作"};
+        String[] columnNames = {"Transaction time", "Transaction type", "Transaction counterparty", "Commodity", "InOut", "Payment amount(yuan)", "Payment method", "Current status", "Transaction order number", "Merchant order number", "Remarks", "Operation"};
         tableModel = new DefaultTableModel(columnNames, 0);
         JTable table = new JTable(tableModel);
         table.getColumnModel().getColumn(11).setPreferredWidth(150); // 让“操作”列更宽，按钮更容易点到
@@ -88,7 +88,7 @@ public class menu {
                 if (rowData.length == 11) {
                     Vector<String> row = new Vector<>();
                     for (String cell : rowData) row.add(cell.trim());
-                    row.add("操作");
+                    row.add("Search");
                     allData.add(row);
                     tableModel.addRow(row);
                 }
@@ -121,7 +121,7 @@ public class menu {
                 panel.add(fields[i]);
             }
 
-            int result = JOptionPane.showConfirmDialog(null, panel, "修改数据", JOptionPane.OK_CANCEL_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, panel, "Modify data", JOptionPane.OK_CANCEL_OPTION);
             if (result == JOptionPane.OK_OPTION) {
                 for (int i = 0; i < fields.length; i++) {
                     rowData.set(i, fields[i].getText().trim());
@@ -159,8 +159,8 @@ public class menu {
     }
 
     static class ButtonRenderer extends JPanel implements TableCellRenderer {
-        JButton editButton = new JButton("修改");
-        JButton deleteButton = new JButton("删除");
+        JButton editButton = new JButton("Modify");
+        JButton deleteButton = new JButton("Delete");
 
         public ButtonRenderer() {
             setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -180,8 +180,8 @@ public class menu {
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
-            editButton = new JButton("修改");
-            deleteButton = new JButton("删除");
+            editButton = new JButton("Modify");
+            deleteButton = new JButton("Delete");
             editButton.addActionListener(e -> editRow(row));
             deleteButton.addActionListener(e -> deleteRow(row));
         }
