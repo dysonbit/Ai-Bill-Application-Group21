@@ -109,7 +109,6 @@ public class CsvTransactionDao implements TransactionDao {
         // 步骤1：移除所有非数字字符（保留小数点和负号）
         String cleanStr = s.replaceAll("[^\\d.-]", "");
 
-        // 步骤2：安全解析数字
         try {
             return Double.parseDouble(cleanStr);
         } catch (NumberFormatException e) {
