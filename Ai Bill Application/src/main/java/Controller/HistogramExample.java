@@ -70,6 +70,7 @@ class HistogramPanel extends JPanel {
     }
 }
 
+
 // 主窗口类
 public class HistogramExample {
     public static void main(String[] args) {

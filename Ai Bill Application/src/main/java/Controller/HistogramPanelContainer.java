@@ -61,6 +61,8 @@ public class HistogramPanelContainer extends JPanel {
         isTextVisible = !isTextVisible;
     }
 
+
+
     private void showHistogram() {
         int[] data = DataGenerator.generateData(1000, 100);
         Histogram histogram = new Histogram(data, 10);

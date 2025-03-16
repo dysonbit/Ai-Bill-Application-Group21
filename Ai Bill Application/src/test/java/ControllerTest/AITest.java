@@ -18,6 +18,9 @@ public class AITest {
             frame.setVisible(true);
         });
 
+
+
+
         // 保持窗口显示一段时间，防止测试结束时窗口立即关闭
         Thread.sleep(5000);
     }
