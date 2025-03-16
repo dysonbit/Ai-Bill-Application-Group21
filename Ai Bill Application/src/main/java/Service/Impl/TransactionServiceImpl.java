@@ -7,10 +7,11 @@ import model.Transaction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransactionServiceImpl implements TransactionService {
-    private static final String CSV_PATH = "src\\main\\resources\\CSVForm\\0001.csv";
-    private static CsvTransactionDao csvTransactionDao;
+    private static final String CSV_PATH = "src\\main\\resources\\CSVForm\\0003.csv";
+    public static CsvTransactionDao csvTransactionDao;
 
     /**
      * 新增交易
@@ -46,8 +47,8 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> searchTransaction(Transaction searchCriteria) {
         try {
             // 1. 读取所有交易记录（假设 filePath 已在类中定义或通过其他方式获取）
-            List<Transaction> allTransactions = csvTransactionDao.loadFromCSV("your_file_path.csv");
-
+            List<Transaction> allTransactions = csvTransactionDao.loadFromCSV("src\\main\\resources\\CSVForm\\0003.csv");
+            System.out.println("Loaded transactions: " + allTransactions.size());
             // 2. 动态模糊匹配
             List<Transaction> matched = new ArrayList<>();
             for (Transaction t : allTransactions) {
@@ -55,6 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
                     matched.add(t);
                 }
             }
+            System.out.println("Matched transactions: " + matched.size());
 
             // 3. 按交易时间倒序排序
             matched.sort((t1, t2) -> compareTransactionTime(t2.getTransactionTime(), t1.getTransactionTime()));
