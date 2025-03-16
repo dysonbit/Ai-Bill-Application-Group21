@@ -17,7 +17,8 @@ public interface TransactionService {
      * 修改交易
      * @param transaction
      */
-    void changeTransaction(Transaction transaction);
+    void changeTransaction(Transaction transaction) throws IOException;
+
 
     /**
      * 根据订单号删除交易

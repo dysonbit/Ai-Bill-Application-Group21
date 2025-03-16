@@ -2,6 +2,7 @@ package Controller;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -23,9 +24,11 @@ public class menu {
 
         JPanel leftPanel = new JPanel(new GridLayout(2, 1));
         JButton menuButton = new JButton("Menu");
+
         JButton aiButton = new JButton("AI");
         leftPanel.add(menuButton);
         leftPanel.add(aiButton);
+
 
         JPanel rightPanel = new JPanel(new BorderLayout());
         JLabel titleLabel = new JLabel("AI Bill", JLabel.CENTER);
