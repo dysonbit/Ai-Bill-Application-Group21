@@ -20,7 +20,6 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionServiceImpl(CsvTransactionDao csvTransactionDao) {
         this.csvTransactionDao = csvTransactionDao;
     }
-
     /**
      * 新增交易
      * @param transaction
@@ -149,6 +148,7 @@ public class TransactionServiceImpl implements TransactionService {
                 && (criteria.getCommodity() == null || containsIgnoreCase(transaction.getCommodity(), criteria.getCommodity()))
                 && (criteria.getInOut() == null || containsIgnoreCase(transaction.getInOut(), criteria.getInOut()))
                 && (criteria.getPaymentMethod() == null || containsIgnoreCase(transaction.getPaymentMethod(), criteria.getPaymentMethod()));
+
     }
 
     // 字符串模糊匹配（空条件视为匹配）

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class CsvTransactionDao implements TransactionDao {
 
-//HEAD 交易时间	交易类型	交易对方	商品	收/支	金额(元)	支付方式	当前状态	交易单号	商户单号	备注
+//HEAD 交易时间	交易类型	交易对方	商品	收/支 支付方式 //金额(元)		//当前状态	//交易单号	//商户单号	//备注
     //
     @Override
     public List<Transaction> loadFromCSV(String filePath) throws IOException {
@@ -56,7 +56,8 @@ public class CsvTransactionDao implements TransactionDao {
                 record.get("交易对方"),
                 record.get("商品"),
                 record.get("收/支"),
-                Double.parseDouble(record.get("金额(元)").substring(1)), // 注意数字转换
+                convertStringToDouble(record.get("金额(元)")),
+//                Double.parseDouble(record.get("金额(元)").substring(1)), // 注意数字转换
                 record.get("支付方式"),
                 record.get("当前状态"),
                 record.get("交易单号"), // 注意字段名拼写问题
@@ -102,6 +103,16 @@ public class CsvTransactionDao implements TransactionDao {
             );
 
             csvPrinter.flush();
+        }
+    }
+    public double convertStringToDouble(String s) {
+        // 步骤1：移除所有非数字字符（保留小数点和负号）
+        String cleanStr = s.replaceAll("[^\\d.-]", "");
+
+        try {
+            return Double.parseDouble(cleanStr);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("无效的数字格式: " + s);
         }
     }
 
