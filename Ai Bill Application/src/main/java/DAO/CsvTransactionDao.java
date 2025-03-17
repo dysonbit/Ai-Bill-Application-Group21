@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class CsvTransactionDao implements TransactionDao {
 
-    //HEAD 交易时间	交易类型	交易对方	商品	收/支	金额(元)	支付方式	当前状态	交易单号	商户单号	备注
+//HEAD 交易时间	交易类型	交易对方	商品	收/支	金额(元)	支付方式	当前状态	交易单号	商户单号	备注
     //
     @Override
     public List<Transaction> loadFromCSV(String filePath) throws IOException {
@@ -82,7 +82,7 @@ public class CsvTransactionDao implements TransactionDao {
 
     // 添加交易
     public void addTransaction(String filePath, Transaction newTransaction) throws IOException {
-        boolean fileExists = Files.exists(Paths.get(filePath));
+        boolean fileExists = Files.exists(Paths.get(filePath)) && Files.size(Paths.get(filePath)) > 0;
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
              CSVPrinter csvPrinter = new CSVPrinter(writer, fileExists ? getCsvFormatWithoutHeader() : getCsvFormatWithHeader(filePath))) {
@@ -133,6 +133,12 @@ public class CsvTransactionDao implements TransactionDao {
     private CSVFormat getCsvFormatWithHeader(String filePath) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String headerLine = reader.readLine();
+            if (headerLine == null || headerLine.trim().isEmpty()) {
+                // 如果文件为空或不存在，返回默认表头
+                return CSVFormat.DEFAULT.withHeader(
+                        "交易时间", "交易类型", "交易对方", "商品", "收/支", "金额(元)", "支付方式", "当前状态", "交易单号", "商户单号", "备注"
+                );
+            }
             return CSVFormat.DEFAULT.withHeader(headerLine.split(",")).withTrim();
         }
     }
