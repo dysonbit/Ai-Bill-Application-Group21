@@ -106,7 +106,7 @@ public class CsvTransactionDao implements TransactionDao {
     }
 
     // 统一写回 CSV
-    private void writeTransactionsToCSV(String filePath, List<Transaction> transactions) throws IOException {
+    public void writeTransactionsToCSV(String filePath, List<Transaction> transactions) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath));
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(
                      "交易时间", "交易类型", "交易对方", "商品", "收/支", "金额(元)", "支付方式", "当前状态", "交易单号", "商户单号", "备注")))  {
