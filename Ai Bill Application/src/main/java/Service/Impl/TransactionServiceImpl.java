@@ -19,7 +19,12 @@ public class TransactionServiceImpl implements TransactionService {
      */
     @Override
     public void addTransaction(Transaction transaction) throws IOException {
-        csvTransactionDao = new CsvTransactionDao();
+        // 确保 csvTransactionDao 已初始化
+        if (csvTransactionDao == null) {
+            csvTransactionDao = new CsvTransactionDao();
+        }
+
+        // 调用 csvTransactionDao 的 addTransaction 方法
         csvTransactionDao.addTransaction(CSV_PATH, transaction);
     }
 
@@ -35,7 +40,22 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public boolean deleteTransaction(String orderNumber) throws IOException {
         csvTransactionDao = new CsvTransactionDao();
-        return csvTransactionDao.deleteTransaction(CSV_PATH, orderNumber);
+        List<Transaction> transactions = csvTransactionDao.loadFromCSV(CSV_PATH);
+
+        // 过滤掉要删除的交易记录
+        System.out.println("CSV 文件中的交易单号列表:");
+        List<Transaction> updatedTransactions = transactions.stream()
+                .filter(t -> !t.getOrderNumber().trim().equals(orderNumber))
+                .collect(Collectors.toList());
+
+        // 如果过滤后的列表大小与原始列表大小相同，说明未找到对应的交易单号
+        if (transactions.size() == updatedTransactions.size()) {
+            return false;
+        }
+
+        // 将更新后的交易记录写回 CSV 文件
+        csvTransactionDao.writeTransactionsToCSV(CSV_PATH, updatedTransactions);
+        return true;
     }
 
     /**

@@ -1,8 +1,11 @@
 package ControllerTest;
 
+import Controller.HistogramExample;
+import Controller.HistogramPanelContainer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -42,7 +45,7 @@ public class MenuUITest {
         JTextField commodityField = findTextField(inputPanel, 3);
         JComboBox<String> inOutComboBox = findComboBox(inputPanel);
         JTextField paymentMethodField = findTextField(inputPanel, 4);
-        JButton searchButton = findButton(inputPanel);
+        JButton searchButton = findButton(inputPanel,"Search");
 
         assertNotNull(transactionTimeField, "交易时间输入字段不应为空");
         assertNotNull(transactionTypeField, "交易类型输入字段不应为空");
@@ -152,6 +155,110 @@ public class MenuUITest {
         assertNotNull(editedPaymentMethod, "编辑后的支付方式不应为空");
     }
 
+    @Test
+    public void testAddFunction() throws IOException {
+        // 创建主面板
+        JPanel mainPanel = menuUI.createMainPanel();
+
+        // 显示界面以便手动验证
+        showUI(mainPanel);
+
+        // 获取输入面板中的组件
+        JPanel inputPanel = findInputPanel(mainPanel);
+        assertNotNull(inputPanel, "输入面板不应为空");
+
+        // 获取 Add 按钮
+        JButton addButton = findButton(inputPanel, "Add");
+        assertNotNull(addButton, "Add 按钮不应为空");
+
+        // 模拟点击 Add 按钮
+        addButton.doClick();
+
+        // 获取对话框
+        Window[] windows = Window.getWindows();
+        JDialog addDialog = null;
+        for (Window window : windows) {
+            if (window instanceof JDialog && "添加交易".equals(((JDialog) window).getTitle())) {
+                addDialog = (JDialog) window;
+                break;
+            }
+        }
+        assertNotNull(addDialog, "添加交易的对话框应弹出");
+
+        // 获取对话框中的输入字段
+        JTextField transactionTimeField = findTextField(addDialog.getContentPane(), 0);
+        JTextField transactionTypeField = findTextField(addDialog.getContentPane(), 1);
+        JTextField counterpartyField = findTextField(addDialog.getContentPane(), 2);
+        JTextField commodityField = findTextField(addDialog.getContentPane(), 3);
+        JComboBox<String> inOutComboBox = findComboBox(addDialog.getContentPane());
+        JTextField paymentAmountField = findTextField(addDialog.getContentPane(), 4);
+        JTextField paymentMethodField = findTextField(addDialog.getContentPane(), 5);
+        JTextField currentStatusField = findTextField(addDialog.getContentPane(), 6);
+        JTextField orderNumberField = findTextField(addDialog.getContentPane(), 7);
+        JTextField merchantNumberField = findTextField(addDialog.getContentPane(), 8);
+        JTextField remarksField = findTextField(addDialog.getContentPane(), 9);
+
+        // 设置新交易的输入值
+        transactionTimeField.setText("2025/3/15 12:00"); // 交易时间
+        transactionTypeField.setText("转账");            // 交易类型
+        counterpartyField.setText("张三");               // 交易对方
+        commodityField.setText("转账");                 // 商品
+        inOutComboBox.setSelectedItem("支出");          // 收/支
+        paymentAmountField.setText("100.0");            // 金额(元)
+        paymentMethodField.setText("银行卡");           // 支付方式
+        currentStatusField.setText("已完成");           // 当前状态
+        orderNumberField.setText("123456789");          // 交易单号
+        merchantNumberField.setText("987654321");       // 商户单号
+        remarksField.setText("测试备注");               // 备注
+
+        // 获取确认按钮
+        JButton confirmButton = findButton(addDialog.getContentPane(), "确认");
+        assertNotNull(confirmButton, "确认按钮不应为空");
+
+        // 模拟点击确认按钮
+        confirmButton.doClick();
+
+        // 获取表格模型
+        DefaultTableModel tableModel = (DefaultTableModel) menuUI.getTable().getModel();
+
+        // 验证表格模型不为空
+        assertNotNull(tableModel, "表格模型不应为空");
+
+        // 验证新交易是否添加到表格中
+        boolean isTransactionAdded = false;
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            String rowTransactionTime = (String) tableModel.getValueAt(i, 0);
+            String rowTransactionType = (String) tableModel.getValueAt(i, 1);
+            String rowCounterparty = (String) tableModel.getValueAt(i, 2);
+            String rowCommodity = (String) tableModel.getValueAt(i, 3);
+            String rowInOut = (String) tableModel.getValueAt(i, 4);
+            String rowPaymentAmount = (String) tableModel.getValueAt(i, 5);
+            String rowPaymentMethod = (String) tableModel.getValueAt(i, 6);
+            String rowCurrentStatus = (String) tableModel.getValueAt(i, 7);
+            String rowOrderNumber = (String) tableModel.getValueAt(i, 8);
+            String rowMerchantNumber = (String) tableModel.getValueAt(i, 9);
+            String rowRemarks = (String) tableModel.getValueAt(i, 10);
+
+            if (rowTransactionTime.equals("2025/3/15 12:00") &&
+                    rowTransactionType.equals("转账") &&
+                    rowCounterparty.equals("张三") &&
+                    rowCommodity.equals("转账") &&
+                    rowInOut.equals("支出") &&
+                    rowPaymentAmount.equals("100.0") &&
+                    rowPaymentMethod.equals("银行卡") &&
+                    rowCurrentStatus.equals("已完成") &&
+                    rowOrderNumber.equals("123456789") &&
+                    rowMerchantNumber.equals("987654321") &&
+                    rowRemarks.equals("测试备注")) {
+                isTransactionAdded = true;
+                break;
+            }
+        }
+
+        // 验证新交易是否成功添加
+        assertTrue(isTransactionAdded, "新交易应成功添加到表格中");
+    }
+
     /**
      * 显示界面以便手动验证
      *
@@ -181,11 +288,25 @@ public class MenuUITest {
      * @return 输入面板
      */
     private JPanel findInputPanel(JPanel mainPanel) {
-        for (Component component : mainPanel.getComponents()) {
-            if (component instanceof JPanel) {
-                JPanel panel = (JPanel) component;
-                if (panel.getComponentCount() > 0 && panel.getComponent(0) instanceof JLabel) {
-                    return panel; // 输入面板通常包含 JLabel
+        // 获取右边的面板
+        Component[] components = mainPanel.getComponents();
+        JPanel rightPanel = null;
+        for (Component component : components) {
+            if (component instanceof JPanel && ((JPanel) component).getComponentCount() > 0) {
+                rightPanel = (JPanel) component;
+                break;
+            }
+        }
+
+        if (rightPanel != null) {
+            // 在右边面板中查找输入面板
+            for (Component component : rightPanel.getComponents()) {
+                if (component instanceof JPanel) {
+                    JPanel panel = (JPanel) component;
+                    System.out.println("Panel found: " + panel.getName()); // 打印面板名称
+                    if (panel.getComponentCount() > 0 && panel.getComponent(0) instanceof JLabel) {
+                        return panel; // 输入面板通常包含 JLabel
+                    }
                 }
             }
         }
@@ -195,13 +316,13 @@ public class MenuUITest {
     /**
      * 查找输入字段
      *
-     * @param panel     输入面板
+     * @param container     输入面板
      * @param index     输入字段的索引
      * @return 输入字段
      */
-    private JTextField findTextField(JPanel panel, int index) {
+    private JTextField findTextField(Container container, int index) {
         int count = 0;
-        for (Component component : panel.getComponents()) {
+        for (Component component : container.getComponents()) {
             if (component instanceof JTextField) {
                 if (count == index) {
                     return (JTextField) component;
@@ -212,14 +333,15 @@ public class MenuUITest {
         return null;
     }
 
+
     /**
      * 查找下拉框
      *
-     * @param panel 输入面板
+     * @param container 输入面板
      * @return 下拉框
      */
-    private JComboBox<String> findComboBox(JPanel panel) {
-        for (Component component : panel.getComponents()) {
+    private JComboBox<String> findComboBox(Container container) {
+        for (Component component : container.getComponents()) {
             if (component instanceof JComboBox) {
                 return (JComboBox<String>) component;
             }
@@ -233,10 +355,27 @@ public class MenuUITest {
      * @param panel 输入面板
      * @return 按钮
      */
-    private JButton findButton(JPanel panel) {
-        for (Component component : panel.getComponents()) {
+    /**
+     * 查找按钮
+     *
+     * @param container 容器（可以是 JPanel 或 JDialog）
+     * @param buttonText 按钮的文本
+     * @return 按钮
+     */
+    /**
+     * 查找按钮
+     *
+     * @param container  容器（可以是 JPanel 或 JDialog）
+     * @param buttonText 按钮的文本
+     * @return 按钮
+     */
+    private JButton findButton(Container container, String buttonText) {
+        for (Component component : container.getComponents()) {
             if (component instanceof JButton) {
-                return (JButton) component;
+                JButton button = (JButton) component;
+                if (button.getText().equals(buttonText)) {
+                    return button;
+                }
             }
         }
         return null;
