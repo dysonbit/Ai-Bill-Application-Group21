@@ -34,7 +34,7 @@ class CsvTransactionDaoTest {
         // 验证第一条记录的字段
         for (int i = 0; i < transactions.size(); i++) {
             System.out.println(transactions.get(i).getRemarks());
-            System.out.println(transactions.get(i).getCommodity());
+            System.out.println(transactions.get(i).getPaymentAmount());
         }
 
 
