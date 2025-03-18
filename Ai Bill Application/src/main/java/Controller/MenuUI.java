@@ -2,7 +2,7 @@ package Controller;
 
 import DAO.CsvTransactionDao;
 
-import Service.lmpl.TransactionServiceImpl;
+import Service.Impl.TransactionServiceImpl;
 
 import Service.Impl.TransactionServiceImpl;
 
@@ -16,10 +16,10 @@ import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuUI {
-    private static final String FILE_PATH = "src\\main\\resources\\CSVForm\\0003.csv";
+    private static final String FILE_PATH = "src\\main\\resources\\CSVForm\\0001.csv";
     private static DefaultTableModel tableModel;
     private static Vector<Vector<String>> allData = new Vector<>();
-    private static TransactionServiceImpl transactionService = new TransactionServiceImpl();
+    private static TransactionServiceImpl transactionService = new TransactionServiceImpl(new CsvTransactionDao());
     private JTable table;  // 把table定义为静态字段
     private HistogramPanelContainer histogramPanelContainer; // 添加 HistogramPanelContainer 实例
     private JPanel rightPanel; // 右边的面板，用于显示搜索和表格界面或 AI 界面
