@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TransactionServiceImpl implements TransactionService {
     private static final String CSV_PATH = "src\\main\\resources\\CSVForm\\0001.csv";
-    private static CsvTransactionDao csvTransactionDao;
+    public static CsvTransactionDao csvTransactionDao;
 
     // 通过构造函数注入 DAO 初始化建议
     // CsvTransactionDao csvTransactionDao = new CsvTransactionDao();
