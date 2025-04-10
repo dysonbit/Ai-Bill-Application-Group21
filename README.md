@@ -1,0 +1,11 @@
+2024.3.29
+添加了俩文件来做初步的ai分析账单
+但是现在有些限制没有解决，请使用尽量小的csv文件！
+
+2024.4.10
+完善了ai分析功能
+1.优化了AITransactionService这个类，它对应的test文件是AIserviceTest。这个类与ai沟通的主要方法是analyzeTransactions(String userRequest, String filePath,以及俩格式为"xxxx/yy/mm"的日期字符串)，userRequest是你的要求（自定义分析账单or提出规划or其他），filePath是账单文件的位置，后面的两个日期是查询的时间范围（表示就近多少天），如果第二个日期是""就表示截止到现在，该方法返回的字段目前设置了400字的字数限制。
+
+2.为防止和ui一起运行时程序卡住，写了一个runnable的类来使用ai功能，即AIAnalyzerThread。具体使用方法见test文件里的AIAnalyzerThreadTest。
+
+3.还有一个AiFunctionTest，我用他来检测给ai传输的账单数据是否有问题
