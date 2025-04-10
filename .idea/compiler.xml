@@ -9,8 +9,5 @@
         <module name="Ai-bill" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Ai-bill" target="19" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CsvTransactionDao implements TransactionDao {
-
+    //避免每次都调用loadFromCSV() 方法
+    private List<Transaction> transactions;
+    private boolean isLoad= false;
 //HEAD 交易时间	交易类型	交易对方	商品	收/支	金额(元)	支付方式	当前状态	交易单号	商户单号	备注
     //
     @Override
@@ -42,6 +44,8 @@ public class CsvTransactionDao implements TransactionDao {
                     transactions.add(transaction);
                 }
                 reader.close();
+                this.transactions = transactions;
+                this.isLoad=true;
                 return transactions;
             }
         }
@@ -67,7 +71,8 @@ public class CsvTransactionDao implements TransactionDao {
 
     // 根据交易单号删除交易记录
     public boolean deleteTransaction(String filePath, String orderNumber) throws IOException {
-        List<Transaction> transactions = loadFromCSV(filePath);
+        if(isLoad==false){ loadFromCSV(filePath);}
+
         List<Transaction> updatedTransactions = transactions.stream()
                 .filter(t -> !t.getOrderNumber().trim().equals(orderNumber))
                 .collect(Collectors.toList());
@@ -149,7 +154,7 @@ public class CsvTransactionDao implements TransactionDao {
     }
 
     public boolean changeInformation(String orderNumber, String head, String value,String path) throws IOException{
-        List<Transaction> transactions=loadFromCSV(path);
+        if(isLoad==false){ loadFromCSV(path);}
         for (int i = 0; i < transactions.size(); i++) {
             if(transactions.get(i).getOrderNumber().trim().equals(orderNumber)){
                 Transaction newTransaction=transactions.get(i);
@@ -199,8 +204,6 @@ public class CsvTransactionDao implements TransactionDao {
                     System.out.println("success to delete");
                 }
                 else System.err.println("failed to delete");
-
-
             }
         }
         return true;

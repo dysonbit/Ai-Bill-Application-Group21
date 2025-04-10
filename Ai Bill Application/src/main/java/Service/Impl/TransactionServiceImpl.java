@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void addTransaction(Transaction transaction) throws IOException {
         // 设置交易时间为当前时间
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         String currentTime = now.format(formatter);
         transaction.setTransactionTime(currentTime);
 
