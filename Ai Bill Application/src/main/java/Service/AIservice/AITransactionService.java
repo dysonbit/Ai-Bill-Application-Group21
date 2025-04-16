@@ -143,7 +143,7 @@ public class AITransactionService {
 
 
 
-    private String askAi(String prompt) {
+    public String askAi(String prompt) {
         try {
             List<ChatMessage> messages = List.of(
                     ChatMessage.builder().role(ChatMessageRole.USER).content(prompt).build()

@@ -19,4 +19,5 @@ public class AIAnalyzerThread implements Runnable {
         System.out.println("AI分析结果: " + result);
         // TODO: 如果是UI程序，可用 SwingUtilities.invokeLater() 更新UI组件
     }
+
 }
