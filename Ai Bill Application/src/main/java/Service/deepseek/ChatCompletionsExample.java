@@ -1,4 +1,4 @@
-package deepseek;
+package Service.deepseek;
 
 import com.volcengine.ark.runtime.model.completion.chat.ChatCompletionRequest;
 import com.volcengine.ark.runtime.model.completion.chat.ChatMessage;
@@ -17,6 +17,7 @@ public class ChatCompletionsExample {
     static Dispatcher dispatcher = new Dispatcher();
     // The output time of the reasoning model is relatively long. Please increase the timeout period.//
     static ArkService service = ArkService.builder().timeout(Duration.ofSeconds(1800)).connectTimeout(Duration.ofSeconds(20)).dispatcher(dispatcher).connectionPool(connectionPool).baseUrl("https://ark.cn-beijing.volces.com/api/v3").apiKey(apiKey).build();
+
     public static void main(String[] args) {
         System.out.println(" [Recommended]----- streaming request -----");
         final List<ChatMessage> streamMessages = new ArrayList<>();
